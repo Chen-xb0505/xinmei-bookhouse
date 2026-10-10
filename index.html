@@ -968,7 +968,6 @@
   });
 
   // ==================== 按年级汇总题库 ====================
-  // 目前只有一年级有内容，其他年级留空，方便以后扩展
   const gradeBank = {
     1: { pinyin: pinyinQuestions, math: mathQuestions, english: englishQuestions },
     2: {},
@@ -978,7 +977,7 @@
     6: {},
   };
 
-  // 模块元数据（只描述每个模块的通用信息）
+  // 模块元数据
   const moduleMeta = {
     pinyin: { title: '语文拼音', speakLang: 'zh-CN' },
     math: { title: '数学算术', speakLang: null },
@@ -1021,13 +1020,32 @@
   function speak(text, lang = 'zh-CN') {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
+
+    // 优先匹配语言的语音包
+    const voices = window.speechSynthesis.getVoices();
+    let voice = voices.find(v => v.lang === lang);
+    if (!voice) {
+      voice = voices.find(v => v.lang && v.lang.startsWith(lang.split('-')[0]));
+    }
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
-    utterance.rate = 0.9;
-    utterance.pitch = 1.1;
+    if (voice) utterance.voice = voice;
+    utterance.rate = 0.85;   // 稍慢，小朋友听得清
+    utterance.pitch = 1.05;
     utterance.volume = 1;
     window.speechSynthesis.speak(utterance);
   }
+
+  // iOS 需要先触摸页面才能播放语音
+  document.addEventListener('touchstart', function unlockSpeech() {
+    try {
+      const u = new SpeechSynthesisUtterance('');
+      u.volume = 0;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+    document.removeEventListener('touchstart', unlockSpeech);
+  }, { once: true });
 
   // ==================== 音效 ====================
   function playTone(freq, duration = 0.15, type = 'sine') {
@@ -1107,7 +1125,11 @@
     const mod = moduleMeta[currentModule];
     if (mod.speakLang && q.speak) {
       speakerBtn.classList.remove('hidden');
-      speakerBtn.onclick = () => speak(q.speak, mod.speakLang);
+      // 语文读整道题，英语读单词
+      speakerBtn.onclick = () => {
+        const text = (currentModule === 'pinyin') ? q.question : q.speak;
+        speak(text, mod.speakLang);
+      };
     } else {
       speakerBtn.classList.add('hidden');
     }
