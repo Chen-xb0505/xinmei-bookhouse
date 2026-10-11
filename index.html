@@ -1141,7 +1141,8 @@
       btn.className = 'option-btn';
       btn.textContent = opt;
       btn.dataset.value = opt;
-      btn.addEventListener('click', () => handleOptionClick(btn, opt, q.answer));
+      // 关键修复：传入时统一转为字符串，避免数字和字符串比较失败
+      btn.addEventListener('click', () => handleOptionClick(btn, String(opt), String(q.answer)));
       optionsContainer.appendChild(btn);
     });
 
@@ -1159,10 +1160,14 @@
     if (answered) return;
     answered = true;
 
+    // 双重保险：统一转成字符串再比较
+    const selectedStr = String(selected);
+    const correctStr = String(correctAnswer);
+
     const allBtns = optionsContainer.querySelectorAll('.option-btn');
     allBtns.forEach(b => b.disabled = true);
 
-    if (selected === correctAnswer) {
+    if (selectedStr === correctStr) {
       btn.classList.add('correct-highlight');
       stars += 1;
       correctCount += 1;
@@ -1178,11 +1183,11 @@
     } else {
       btn.classList.add('wrong-highlight');
       allBtns.forEach(b => {
-        if (b.dataset.value === correctAnswer) {
+        if (String(b.dataset.value) === correctStr) {
           b.classList.add('correct-highlight');
         }
       });
-      feedbackMsg.textContent = `❌ 再想想哦，正确答案是 ${correctAnswer}`;
+      feedbackMsg.textContent = `❌ 再想想哦，正确答案是 ${correctStr}`;
       feedbackMsg.className = 'feedback wrong';
       playWrongSound();
     }
