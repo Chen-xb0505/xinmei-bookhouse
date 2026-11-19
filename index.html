@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>馨妹书屋 · 随机大题库</title>
+  <title>馨妹书屋 · 学习与趣味游戏</title>
   <style>
     * {
       box-sizing: border-box;
@@ -625,6 +625,88 @@
       animation: pop 0.3s ease;
     }
 
+    /* 趣味游戏：单文件、离线可玩 */
+    .games-entry { background: #fff3dc; color: #8a591e; }
+    .games-intro { color: #647c92; font-size: 16px; line-height: 1.7; margin: 8px 4px 24px; }
+    .game-link {
+      width: 100%; border: 2px solid #f4d9a6; border-radius: 28px;
+      padding: 24px; background: #fff9ed; text-align: left; cursor: pointer;
+      color: #243e59; display: flex; align-items: center; gap: 18px;
+      box-shadow: 0 6px 0 #f0dfbe;
+    }
+    .game-link-icon {
+      background: #ffc969; border-radius: 20px; width: 76px; height: 76px;
+      display: grid; place-items: center; font-size: 40px; font-weight: 800; flex-shrink: 0;
+    }
+    .game-link strong { display: block; font-size: 27px; margin-bottom: 7px; }
+    .game-link small { display: block; font-size: 14px; line-height: 1.7; color: #6f785e; }
+    .game24-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0 14px; }
+    .game24-mode {
+      border: 2px solid #dce8f0; border-radius: 20px; background: white;
+      padding: 13px 8px; color: #526c86; font: inherit; cursor: pointer;
+    }
+    .game24-mode strong { display: block; font-size: 20px; margin-bottom: 4px; }
+    .game24-mode small { font-size: 12px; }
+    .game24-mode[aria-pressed="true"] { border-color: #e3aa41; background: #fff4d8; color: #785116; }
+    .game24-summary { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .game24-summary p { color: #6a8094; font-size: 14px; }
+    .game24-score { color: #88621f; background: #fff4d8; padding: 7px 12px; border-radius: 30px; white-space: nowrap; font-size: 14px; }
+    .game24-target { text-align: center; margin: 14px 0 10px; color: #456179; }
+    .game24-target strong { display: inline-block; font-size: 56px; line-height: 1.1; color: #243e59; margin-left: 8px; vertical-align: middle; }
+    .game24-rules { font-size: 14px; line-height: 1.7; text-align: center; color: #667d91; min-height: 48px; }
+    .game24-hand { margin: 10px 0 14px; font-size: 13px; text-align: center; color: #718395; }
+    .game24-numbers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .game24-number {
+      min-width: 0; min-height: 94px; border: 2px solid #d8e6f1; border-radius: 21px;
+      background: #f5faff; color: #244560; padding: 10px 3px 8px; cursor: pointer;
+      box-shadow: 0 5px 0 #d8e6f1; transition: background .12s, transform .12s;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .game24-number strong { font-size: 32px; line-height: 1.2; overflow-wrap: anywhere; }
+    .game24-number small { font-size: 11px; line-height: 1.5; margin-top: 6px; color: #6b8194; }
+    .game24-number[aria-pressed="true"] { border-color: #d9a443; background: #ffefc4; box-shadow: 0 5px 0 #e9c77e; }
+    .game24-number[aria-pressed="true"] small { color: #805717; font-weight: 700; }
+    .game24-number:disabled { cursor: default; }
+    .game24-number.is-win { background: #e5f6e6; border-color: #8ebd91; box-shadow: 0 5px 0 #b9d9bb; }
+    .game24-workbench { margin-top: 21px; background: #f4f8fb; border-radius: 24px; padding: 16px 12px; }
+    .game24-help { font-size: 13px; color: #60778c; text-align: center; margin-bottom: 13px; }
+    .game24-operators { display: flex; justify-content: center; gap: 12px; }
+    .game24-op {
+      width: 58px; height: 50px; font-size: 29px; color: #365b78; border: 2px solid #d4e3ef;
+      border-radius: 15px; background: white; cursor: pointer;
+    }
+    .game24-op[aria-pressed="true"] { background: #dcefff; border-color: #589acb; color: #174d76; }
+    .game24-expression { min-height: 48px; display: flex; justify-content: center; align-items: center; gap: 8px; margin: 10px 0 6px; }
+    #game24Expression { font-size: 23px; font-weight: 700; color: #29465e; overflow-wrap: anywhere; }
+    .game24-swap { background: white; border: 1px solid #ccdce8; color: #506e86; border-radius: 20px; font: inherit; font-size: 12px; padding: 8px 10px; cursor: pointer; }
+    .game24-calculate {
+      background: #428ac2; border: none; border-radius: 18px; width: 100%; padding: 13px 10px;
+      color: white; font: inherit; font-size: 21px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 0 #306b99;
+    }
+    .game24-calculate:disabled { background: #c8d8e5; box-shadow: none; color: #57738a; cursor: default; }
+    .game24-status { min-height: 60px; padding: 13px 8px; text-align: center; color: #567187; font-size: 15px; line-height: 1.6; }
+    .game24-status[data-kind="success"] { color: #287041; background: #eaf8ed; border-radius: 18px; }
+    .game24-status[data-kind="error"] { color: #9b523a; }
+    .game24-tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 4px 0 12px; }
+    .game24-tool { padding: 11px 4px; border-radius: 16px; border: 1px solid #d6e4ee; background: white; color: #49667e; font: inherit; font-size: 14px; cursor: pointer; }
+    .game24-tool:disabled, .game24-swap:disabled, .game24-op:disabled { opacity: .45; cursor: default; }
+    .game24-history { color: #547087; font-size: 14px; line-height: 1.8; padding: 9px 12px; background: #f5f9fc; border-radius: 16px; margin-bottom: 12px; }
+    .game24-history ol { padding-left: 23px; }
+    .game24-answer { border: 1px dashed #dbbc7b; border-radius: 16px; background: #fff9eb; padding: 13px; font-size: 14px; line-height: 1.8; margin-bottom: 12px; color: #795d31; }
+    .game24-answer p { overflow-wrap: anywhere; }
+    .game24-new { width: 100%; border: none; border-radius: 22px; background: #ffd080; color: #69481d; font: inherit; font-size: 20px; font-weight: 700; padding: 15px; box-shadow: 0 4px 0 #e6b25d; cursor: pointer; }
+    .game24-answer-toggle { display: block; margin: 16px auto 0; padding: 6px; background: none; border: none; color: #5d7b94; font: inherit; font-size: 14px; text-decoration: underline; cursor: pointer; }
+    #gamesScreen button:focus-visible, #game24Screen button:focus-visible, #gamesEntryBtn:focus-visible { outline: 3px solid #356faa; outline-offset: 4px; }
+    @media (max-width: 360px) {
+      .game24-numbers { gap: 7px; }
+      .game24-number { min-height: 84px; border-radius: 16px; }
+      .game24-number strong { font-size: 26px; }
+      .game24-mode small { font-size: 11px; }
+      .game24-op { width: 48px; }
+      #game24Expression { font-size: 20px; }
+    }
+
     @media (max-width: 400px) {
       .question-text { font-size: 28px; }
       .option-btn { font-size: 22px; padding: 16px 6px; min-height: 70px; }
@@ -689,7 +771,66 @@
     <button class="module-btn" data-module="english">
       <span>🇬🇧</span> 英语单词
     </button>
+    <button class="module-btn games-entry" id="gamesEntryBtn">
+      <span aria-hidden="true">🎮</span> 趣味游戏
+    </button>
   </div>
+
+  <!-- 趣味游戏入口，与学科年级选择独立 -->
+  <section id="gamesScreen" class="hidden" aria-labelledby="gamesTitle">
+    <div class="top-bar">
+      <div class="left-group">
+        <button class="back-btn" id="gamesHomeBtn" aria-label="返回首页">🏠</button>
+        <h1 class="module-title" id="gamesTitle">趣味游戏</h1>
+      </div>
+    </div>
+    <p class="games-intro">动动脑，玩一玩。选一个小游戏，发现数字里的乐趣！</p>
+    <button class="game-link" id="openGame24Btn">
+      <span class="game-link-icon" aria-hidden="true">24</span>
+      <span><strong>速算24</strong><small>四张数字卡，算出 24！<br>基础版 · 加减法　进阶版 · 四则运算</small></span>
+    </button>
+  </section>
+
+  <!-- 速算24：通过合并卡片确保四个数各用一次 -->
+  <section id="game24Screen" class="hidden" aria-labelledby="game24Title">
+    <div class="top-bar">
+      <div class="left-group">
+        <button class="back-btn" id="game24BackBtn" aria-label="返回趣味游戏">←</button>
+        <h1 class="module-title" id="game24Title">速算24</h1>
+      </div>
+      <span class="game24-score" id="game24Score" aria-live="polite">已完成 0 题</span>
+    </div>
+    <div class="game24-modes" role="group" aria-label="选择难度">
+      <button class="game24-mode" data-game24-mode="basic" aria-pressed="true"><strong>基础版</strong><small>一、二年级 · 只用加减法</small></button>
+      <button class="game24-mode" data-game24-mode="advanced" aria-pressed="false"><strong>进阶版</strong><small>加减乘除 · 只做整数运算</small></button>
+    </div>
+    <div class="game24-summary"><p id="game24Round">第 1 题</p><p>不计时，慢慢想</p></div>
+    <div class="game24-target">目标数字<strong>24</strong></div>
+    <p class="game24-rules" id="game24Rules"></p>
+    <p class="game24-hand" id="game24Hand"></p>
+    <div class="game24-numbers" id="game24Numbers" role="group" aria-label="可使用的数字卡片"></div>
+    <div class="game24-workbench">
+      <p class="game24-help">点两个数字 → 选运算符 → 算一下</p>
+      <div class="game24-operators" role="group" aria-label="选择运算符">
+        <button class="game24-op" data-game24-op="+" aria-label="加法" aria-pressed="false">+</button>
+        <button class="game24-op" data-game24-op="−" aria-label="减法" aria-pressed="false">−</button>
+        <button class="game24-op hidden" data-game24-op="×" aria-label="乘法" aria-pressed="false">×</button>
+        <button class="game24-op hidden" data-game24-op="÷" aria-label="除法" aria-pressed="false">÷</button>
+      </div>
+      <div class="game24-expression"><span id="game24Expression" aria-live="polite">□ ? □ = ?</span><button class="game24-swap" id="game24SwapBtn" disabled>交换顺序</button></div>
+      <button class="game24-calculate" id="game24CalculateBtn" disabled>算一下</button>
+    </div>
+    <p class="game24-status" id="game24Status" role="status" aria-live="polite"></p>
+    <div class="game24-tools">
+      <button class="game24-tool" id="game24UndoBtn" disabled>↶ 撤销一步</button>
+      <button class="game24-tool" id="game24ResetBtn">↺ 重新算</button>
+      <button class="game24-tool" id="game24HintBtn">💡 提示一步</button>
+    </div>
+    <div class="game24-history hidden" id="game24History"><strong>我的计算</strong><ol id="game24Steps"></ol></div>
+    <div class="game24-answer hidden" id="game24Answer" aria-live="polite"></div>
+    <button class="game24-new" id="game24NewBtn">换一道题 →</button>
+    <button class="game24-answer-toggle" id="game24AnswerBtn" aria-expanded="false" aria-controls="game24Answer">看看一种解法</button>
+  </section>
 
   <!-- 答题界面 -->
   <div id="quizScreen" class="hidden">
@@ -1251,6 +1392,8 @@
   function goHome() {
     quizScreen.classList.add('hidden');
     resultScreen.classList.add('hidden');
+    document.getElementById('gamesScreen').classList.add('hidden');
+    document.getElementById('game24Screen').classList.add('hidden');
     homeScreen.classList.remove('hidden');
     if (window.speechSynthesis) window.speechSynthesis.cancel();
   }
@@ -1309,7 +1452,7 @@
   });
 
   // ==================== 事件 ====================
-  document.querySelectorAll('.module-btn').forEach(btn => {
+  document.querySelectorAll('.module-btn[data-module]').forEach(btn => {
     btn.addEventListener('click', () => {
       startModule(btn.dataset.module);
     });
@@ -1319,6 +1462,351 @@
   restartBtn.addEventListener('click', restartCurrent);
   backHomeBtn.addEventListener('click', goHome);
   quizBackBtn.addEventListener('click', showBackConfirm);
+
+  // ==================== 速算24：整数运算与有解出题 ====================
+  const game24Operators = { basic: ['+', '−'], advanced: ['+', '−', '×', '÷'] };
+
+  function calculate24Value(a, b, operator, mode) {
+    if (!Number.isSafeInteger(a) || !Number.isSafeInteger(b) ||
+        !game24Operators[mode] || !game24Operators[mode].includes(operator)) return null;
+    let value;
+    if (operator === '+') value = a + b;
+    if (operator === '−') value = a - b;
+    if (operator === '×') value = a * b;
+    if (operator === '÷') {
+      if (b === 0 || a % b !== 0) return null;
+      value = a / b;
+    }
+    if (!Number.isSafeInteger(value) || (mode === 'basic' && (value < 0 || value > 100))) return null;
+    return value === 0 ? 0 : value;
+  }
+
+  function make24Cards(numbers) {
+    return numbers.map((value, id) => ({ id, value, expression: String(value), used: 1 }));
+  }
+
+  function format24Number(value) {
+    return value < 0 ? `(${value})` : String(value);
+  }
+
+  // 枚举两两合并的所有合法顺序；只缓存无解数值状态，重复数字仍是独立卡片。
+  function find24Solution(cards, mode) {
+    const failed = new Set();
+    function search(nodes) {
+      if (nodes.length === 1) return nodes[0].value === 24 ? [] : null;
+      const key = nodes.map(n => n.value).sort((a, b) => a - b).join(',');
+      if (failed.has(key)) return null;
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          for (const operator of game24Operators[mode]) {
+            const orders = (operator === '−' || operator === '÷') ? [[i, j], [j, i]] : [[i, j]];
+            for (const [left, right] of orders) {
+              const a = nodes[left], b = nodes[right];
+              const value = calculate24Value(a.value, b.value, operator, mode);
+              if (value === null) continue;
+              const merged = {
+                id: Math.max(...nodes.map(n => n.id)) + 1,
+                value, used: a.used + b.used,
+                expression: `(${a.expression} ${operator} ${b.expression})`
+              };
+              const rest = nodes.filter((_, index) => index !== i && index !== j);
+              const tail = search([...rest, merged]);
+              if (tail !== null) {
+                return [{ leftId: a.id, rightId: b.id, a: a.value, b: b.value, operator, value }, ...tail];
+              }
+            }
+          }
+        }
+      }
+      failed.add(key);
+      return null;
+    }
+    return search(cards);
+  }
+
+  function generate24Puzzle(mode, previousKey = '') {
+    const maxNumber = mode === 'basic' ? 10 : 13;
+    const wantSubtraction = mode === 'basic' && Math.random() < 0.4;
+    for (let attempt = 0; attempt < 160; attempt++) {
+      const numbers = Array.from({ length: 4 }, () => 1 + Math.floor(Math.random() * maxNumber));
+      const key = [...numbers].sort((a, b) => a - b).join(',');
+      if (key === previousKey) continue;
+      if (wantSubtraction && numbers.reduce((sum, n) => sum + n, 0) === 24) continue;
+      const cards = make24Cards(numbers);
+      // 进阶题不能仅凭加减法完成，让两种难度有实际区别。
+      if (mode === 'advanced' && find24Solution(cards, 'basic') !== null) continue;
+      const solution = find24Solution(cards, mode);
+      if (solution !== null) return { numbers, key, solution };
+    }
+    // 随机尝试有上限，兜底题同样通过求解器验证，且避开上一题。
+    const fallback = mode === 'basic' ? [[3, 5, 7, 9], [10, 9, 8, 3]] : [[2, 3, 4, 6], [1, 2, 3, 4]];
+    const numbers = shuffle(fallback.find(hand => [...hand].sort((a, b) => a - b).join(',') !== previousKey));
+    return { numbers, key: [...numbers].sort((a, b) => a - b).join(','), solution: find24Solution(make24Cards(numbers), mode) };
+  }
+
+  const game24 = {
+    mode: 'basic',
+    rounds: { basic: null, advanced: null },
+    counts: { basic: 0, advanced: 0 },
+    completed: { basic: 0, advanced: 0 }
+  };
+  const game24UI = {};
+  ['Screen', 'Score', 'Round', 'Rules', 'Hand', 'Numbers', 'Expression', 'Status', 'History', 'Steps',
+    'Answer', 'SwapBtn', 'CalculateBtn', 'UndoBtn', 'ResetBtn', 'HintBtn', 'NewBtn', 'AnswerBtn'].forEach(name => {
+    game24UI[name] = document.getElementById('game24' + name);
+  });
+  const current24Round = () => game24.rounds[game24.mode];
+  const is24Solved = round => round.cards.length === 1 && round.cards[0].used === 4 && round.cards[0].value === 24;
+
+  function showGames() {
+    homeScreen.classList.add('hidden');
+    quizScreen.classList.add('hidden');
+    resultScreen.classList.add('hidden');
+    game24UI.Screen.classList.add('hidden');
+    document.getElementById('gamesScreen').classList.remove('hidden');
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+
+  function start24Game(mode = game24.mode) {
+    if (!game24Operators[mode]) return;
+    game24.mode = mode;
+    homeScreen.classList.add('hidden');
+    quizScreen.classList.add('hidden');
+    resultScreen.classList.add('hidden');
+    document.getElementById('gamesScreen').classList.add('hidden');
+    game24UI.Screen.classList.remove('hidden');
+    if (!current24Round()) new24Puzzle();
+    else render24Game();
+  }
+
+  function new24Puzzle() {
+    const old = current24Round();
+    const puzzle = generate24Puzzle(game24.mode, old ? old.key : '');
+    game24.counts[game24.mode]++;
+    game24.rounds[game24.mode] = {
+      ...puzzle, cards: make24Cards(puzzle.numbers), selected: [], operator: null,
+      history: [], steps: [], nextId: 4, awarded: false, showAnswer: false,
+      message: '每张卡片都要用到，先选两个数字试试看。', kind: ''
+    };
+    render24Game();
+  }
+
+  function set24Message(message, kind = '') {
+    const round = current24Round();
+    round.message = message;
+    round.kind = kind;
+    game24UI.Status.textContent = message;
+    game24UI.Status.dataset.kind = kind;
+  }
+
+  function step24Text(step) {
+    return `${format24Number(step.a)} ${step.operator} ${format24Number(step.b)} = ${step.value}`;
+  }
+
+  function render24Game() {
+    const round = current24Round();
+    const solved = is24Solved(round);
+    const finished = round.cards.length === 1;
+    document.querySelectorAll('[data-game24-mode]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.game24Mode === game24.mode));
+    });
+    document.querySelectorAll('[data-game24-op]').forEach(button => {
+      button.classList.toggle('hidden', !game24Operators[game24.mode].includes(button.dataset.game24Op));
+      button.setAttribute('aria-pressed', String(round.operator === button.dataset.game24Op));
+      button.disabled = finished;
+    });
+    game24UI.Score.textContent = `已完成 ${game24.completed[game24.mode]} 题`;
+    game24UI.Round.textContent = `第 ${game24.counts[game24.mode]} 题`;
+    game24UI.Rules.textContent = game24.mode === 'basic'
+      ? '四个数各用一次，只用加减法。每一步不出现负数，最后得到 24。'
+      : '四个数各用一次，可用加减乘除。除法必须整除，可以出现负整数。';
+    game24UI.Hand.textContent = `本题数字：${round.numbers.join(' · ')}　｜　还剩 ${round.cards.length} 张卡`;
+    game24UI.Numbers.replaceChildren();
+    round.cards.forEach(card => {
+      const button = document.createElement('button');
+      const selectedIndex = round.selected.indexOf(card.id);
+      button.className = 'game24-number' + (solved ? ' is-win' : '');
+      button.dataset.cardId = card.id;
+      button.setAttribute('aria-pressed', String(selectedIndex !== -1));
+      button.setAttribute('aria-label', `${card.value}，${card.used === 1 ? '原始数字卡' : '由' + card.used + '张卡合成'}${selectedIndex !== -1 ? '，第' + (selectedIndex + 1) + '个数' : ''}`);
+      button.title = card.expression;
+      button.disabled = finished;
+      const value = document.createElement('strong');
+      value.textContent = card.value;
+      const label = document.createElement('small');
+      label.textContent = selectedIndex !== -1 ? `第 ${selectedIndex + 1} 个数` : card.used > 1 ? `${card.used} 张合成` : '点我选择';
+      button.append(value, label);
+      game24UI.Numbers.appendChild(button);
+    });
+    const selectedCards = round.selected.map(id => round.cards.find(card => card.id === id));
+    game24UI.Expression.textContent = `${selectedCards[0] ? format24Number(selectedCards[0].value) : '□'} ${round.operator || '?'} ${selectedCards[1] ? format24Number(selectedCards[1].value) : '□'} = ?`;
+    game24UI.SwapBtn.disabled = round.selected.length !== 2;
+    game24UI.CalculateBtn.disabled = finished || round.selected.length !== 2 || !round.operator;
+    game24UI.UndoBtn.disabled = round.history.length === 0;
+    game24UI.HintBtn.disabled = solved;
+    game24UI.NewBtn.textContent = solved ? '继续挑战下一题 →' : '换一道题 →';
+    game24UI.Steps.replaceChildren();
+    round.steps.forEach(step => {
+      const item = document.createElement('li');
+      item.textContent = step24Text(step);
+      game24UI.Steps.appendChild(item);
+    });
+    game24UI.History.classList.toggle('hidden', !round.steps.length);
+    game24UI.Answer.replaceChildren();
+    game24UI.Answer.classList.toggle('hidden', !round.showAnswer);
+    game24UI.AnswerBtn.setAttribute('aria-expanded', String(round.showAnswer));
+    game24UI.AnswerBtn.textContent = round.showAnswer ? '收起解法' : '看看一种解法';
+    if (round.showAnswer) {
+      const title = document.createElement('strong');
+      title.textContent = '从本题最初的四个数开始：';
+      game24UI.Answer.appendChild(title);
+      round.solution.forEach((step, index) => {
+        const line = document.createElement('p');
+        line.textContent = `${index + 1}. ${step24Text(step)}`;
+        game24UI.Answer.appendChild(line);
+      });
+    }
+    set24Message(round.message, round.kind);
+  }
+
+  function select24Card(id) {
+    const round = current24Round();
+    if (round.cards.length < 2 || !round.cards.some(card => card.id === id)) return;
+    const index = round.selected.indexOf(id);
+    if (index !== -1) round.selected.splice(index, 1);
+    else if (round.selected.length < 2) round.selected.push(id);
+    else {
+      set24Message('已经选了两个数。点一下已选卡片可以取消选择。');
+      return;
+    }
+    round.message = round.selected.length === 2
+      ? (round.operator ? '准备好啦，点“算一下”。' : '选一个运算符，再点“算一下”。')
+      : '按先后顺序选两个数，点已选卡片可以取消。';
+    round.kind = '';
+    render24Game();
+  }
+
+  function calculate24Step() {
+    const round = current24Round();
+    if (round.selected.length !== 2 || !round.operator || round.cards.length < 2) return;
+    const [a, b] = round.selected.map(id => round.cards.find(card => card.id === id));
+    if (!a || !b || a.id === b.id) return;
+    const value = calculate24Value(a.value, b.value, round.operator, game24.mode);
+    if (value === null) {
+      if (round.operator === '÷' && b.value === 0) set24Message('0 不能作除数，换一个数或运算符吧。', 'error');
+      else if (round.operator === '÷') set24Message('这一步不能整除。我们只算整数，试试交换顺序或换个运算符。', 'error');
+      else if (game24.mode === 'basic' && a.value < b.value && round.operator === '−') set24Message('基础版不算负数。试试“交换顺序”，用大数减小数。', 'error');
+      else set24Message('这个结果超出了本关的计算范围，换一种算法试试。', 'error');
+      return;
+    }
+    round.history.push({ cards: round.cards.map(card => ({ ...card })), steps: [...round.steps] });
+    const step = { a: a.value, b: b.value, operator: round.operator, value };
+    round.steps.push(step);
+    round.cards = round.cards.filter(card => !round.selected.includes(card.id));
+    round.cards.push({ id: round.nextId++, value, used: a.used + b.used, expression: `(${a.expression} ${round.operator} ${b.expression})` });
+    round.selected = [];
+    round.operator = null;
+    round.kind = '';
+    if (is24Solved(round)) {
+      if (!round.awarded) {
+        round.awarded = true;
+        game24.completed[game24.mode]++;
+        playCorrectSound();
+      }
+      round.message = '🎉 算对啦！四个数都用上了，结果正好是 24！';
+      round.kind = 'success';
+    } else if (round.cards.length === 1) {
+      round.message = `这次算出了 ${value}，离目标还差一点。撤销一步或重新算，试试其他方法。`;
+      round.kind = 'error';
+    } else {
+      round.message = value === 24
+        ? '已经出现 24 啦！不过还要用完剩下的卡片，最后只留一张 24。'
+        : `${step24Text(step)}，继续用剩下的卡片计算吧。`;
+    }
+    render24Game();
+  }
+
+  function undo24Step() {
+    const round = current24Round();
+    const previous = round.history.pop();
+    if (!previous) return;
+    round.cards = previous.cards;
+    round.steps = previous.steps;
+    round.selected = [];
+    round.operator = null;
+    round.message = '已撤销一步，换一种方法试试看。';
+    round.kind = '';
+    render24Game();
+  }
+
+  function reset24Puzzle() {
+    const round = current24Round();
+    round.cards = make24Cards(round.numbers);
+    round.history = [];
+    round.steps = [];
+    round.selected = [];
+    round.operator = null;
+    round.showAnswer = false;
+    round.nextId = 4;
+    round.message = '回到最初的四张卡片，再想一种算法吧。';
+    round.kind = '';
+    // 同一道题撤销或重算后再次完成，不重复增加完成数。
+    render24Game();
+  }
+
+  function hint24Step() {
+    const round = current24Round();
+    if (is24Solved(round)) return;
+    const solution = find24Solution(round.cards, game24.mode);
+    if (solution === null) {
+      set24Message('按现在的结果已经算不出 24 了。撤销一步，或点“重新算”再试试。');
+      return;
+    }
+    const step = solution[0];
+    round.selected = [step.leftId, step.rightId];
+    round.operator = step.operator;
+    round.message = `💡 试试 ${format24Number(step.a)} ${step.operator} ${format24Number(step.b)}，选好啦，自己算一下！`;
+    round.kind = '';
+    render24Game();
+  }
+
+  document.getElementById('gamesEntryBtn').addEventListener('click', showGames);
+  document.getElementById('gamesHomeBtn').addEventListener('click', goHome);
+  document.getElementById('openGame24Btn').addEventListener('click', () => start24Game());
+  document.getElementById('game24BackBtn').addEventListener('click', showGames);
+  document.querySelectorAll('[data-game24-mode]').forEach(button => {
+    button.addEventListener('click', () => start24Game(button.dataset.game24Mode));
+  });
+  document.querySelectorAll('[data-game24-op]').forEach(button => {
+    button.addEventListener('click', () => {
+      const round = current24Round();
+      const operator = button.dataset.game24Op;
+      if (round.cards.length < 2 || !game24Operators[game24.mode].includes(operator)) return;
+      round.operator = operator;
+      round.message = round.selected.length === 2 ? '点“算一下”，把这两张卡合成一张。' : '再按顺序选择两个数字。';
+      round.kind = '';
+      render24Game();
+    });
+  });
+  game24UI.Numbers.addEventListener('click', event => {
+    const button = event.target.closest('[data-card-id]');
+    if (button && !button.disabled) select24Card(Number(button.dataset.cardId));
+  });
+  game24UI.SwapBtn.addEventListener('click', () => {
+    current24Round().selected.reverse();
+    current24Round().message = '已交换两个数的顺序。';
+    current24Round().kind = '';
+    render24Game();
+  });
+  game24UI.CalculateBtn.addEventListener('click', calculate24Step);
+  game24UI.UndoBtn.addEventListener('click', undo24Step);
+  game24UI.ResetBtn.addEventListener('click', reset24Puzzle);
+  game24UI.HintBtn.addEventListener('click', hint24Step);
+  game24UI.NewBtn.addEventListener('click', new24Puzzle);
+  game24UI.AnswerBtn.addEventListener('click', () => {
+    current24Round().showAnswer = !current24Round().showAnswer;
+    render24Game();
+  });
 
   window.addEventListener('load', () => {
     if (window.speechSynthesis) {
